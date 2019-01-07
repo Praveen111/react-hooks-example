@@ -5,6 +5,7 @@ function BookBuilder() {
 
     const [newBooks,setBooks] = useState([]);
     const [isShow,setShow] = useState(false);
+    const [textValue, setTextValue] = useState('');
 
     //useEffect runs infinitely if you don't pass second arguement as {} or [] - sending this basically means run this only on mount or unmount
     useEffect(() => {
@@ -31,8 +32,14 @@ function BookBuilder() {
 
     }
 
+    function setTextValueHandler(e) {
+        console.log(e);
+        setTextValue(e);
+    }
+
     let BooksPage = (<div>
         <Books books={newBooks} addBook={addBook} removeBook={removeBook} />
+        <input type="text" onChange={(e) => setTextValueHandler(e.target.value)} />
     </div>);
         return(
             <div>
