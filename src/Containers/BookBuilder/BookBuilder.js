@@ -17,13 +17,17 @@ function BookBuilder() {
     },[]);
 
     function addBook (book) {
-      
-        console.log(book);
+     
       
     }
 
     function removeBook(Book) {
         console.log(Book);
+
+        const newBooksArray = newBooks;
+        newBooksArray.splice(Book,1);
+        setBooks(newBooksArray);
+        console.log(newBooks);
 
     }
 
