@@ -1,4 +1,7 @@
-
+*{
+    margin: 0;
+    padding: 0;
+}
 .Books {
 padding: 40px;
     width: 0 auto;

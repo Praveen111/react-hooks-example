@@ -1,11 +1,15 @@
-import React, {useEffect,useState} from 'react';
+import React, {useEffect,useState, useReducer} from 'react';
 import Books from '../../Components/Books/Books';
+import reducer from '../../Store/Reducers/BookReducer';
+import { connect } from 'react-redux';
 
 function BookBuilder() {
 
     const [newBooks,setBooks] = useState([]);
     const [isShow,setShow] = useState(false);
     const [textValue, setTextValue] = useState('');
+    
+    const [state, dispatch] = useReducer(reducer, {count: 0});
 
     //useEffect runs infinitely if you don't pass second arguement as {} or [] - sending this basically means run this only on mount or unmount
     useEffect(() => {
@@ -22,6 +26,7 @@ function BookBuilder() {
       
     }
 
+
     function removeBook(Book) {
         console.log(Book);
 
@@ -33,13 +38,21 @@ function BookBuilder() {
     }
 
     function setTextValueHandler(e) {
-        console.log(e);
         setTextValue(e);
+        console.log(textValue);
     }
 
     let BooksPage = (<div>
         <Books books={newBooks} addBook={addBook} removeBook={removeBook} />
         <input type="text" onChange={(e) => setTextValueHandler(e.target.value)} />
+        <>
+            Count: {state.count}
+            <button onClick={() => dispatch({type: 'reset'})}>
+              Reset
+            </button>
+            <button onClick={() => dispatch({type: 'increment'})}>+</button>
+            <button onClick={() => dispatch({type: 'decrement'})}>-</button>
+          </>
     </div>);
         return(
             <div>
@@ -52,4 +65,5 @@ function BookBuilder() {
 }
 
 
-export default BookBuilder;
+export default connect(null,null)(BookBuilder);
+
