@@ -1,12 +1,13 @@
+import { INCREMENT } from "./constants";
 
 
-increment = () => {
+const increment = () => {
     return {
-      type: INCREMENT_COUNTER
+      type: INCREMENT
     };
   }
 
-incrementAsync = () => {
+const incrementAsync = () => {
     return dispatch => {
     //   setTimeout(() => {
         // Yay! Can invoke sync or async actions with `dispatch`
@@ -14,3 +15,6 @@ incrementAsync = () => {
     //   }, 1000);
     };
   }
+
+
+  export default incrementAsync;

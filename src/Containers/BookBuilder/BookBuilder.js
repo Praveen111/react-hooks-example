@@ -1,15 +1,16 @@
 import React, {useEffect,useState, useReducer} from 'react';
 import Books from '../../Components/Books/Books';
-import reducer from '../../Store/Reducers/BookReducer';
 import { connect } from 'react-redux';
+import incrementAction from '../../Store/Actions/BookActions';
+import reducer from '../../Store/Reducers/BookReducer';
 
-function BookBuilder() {
+function BookBuilder(props) {
 
     const [newBooks,setBooks] = useState([]);
     const [isShow,setShow] = useState(false);
     const [textValue, setTextValue] = useState('');
     
-    const [state, dispatch] = useReducer(reducer, {count: 0});
+    const [countState, bookAction] = useReducer(reducer, {count: 0});
 
     //useEffect runs infinitely if you don't pass second arguement as {} or [] - sending this basically means run this only on mount or unmount
     useEffect(() => {
@@ -19,11 +20,18 @@ function BookBuilder() {
             setBooks(result.Books);
             setShow(true);
         })
+
+        console.log('Props', props)
     },[]);
 
-    function addBook (book) {
+    useEffect(() => {
+        console.log('Props after Count changed', countState);
+        
+    },[countState]);
+
+    function addBook () {
      
-      
+       props.add();
     }
 
 
@@ -46,12 +54,12 @@ function BookBuilder() {
         <Books books={newBooks} addBook={addBook} removeBook={removeBook} />
         <input type="text" onChange={(e) => setTextValueHandler(e.target.value)} />
         <>
-            Count: {state.count}
-            <button onClick={() => dispatch({type: 'reset'})}>
+            Count: {countState.count}
+            <button onClick={() => bookAction({type: 'reset'})}>
               Reset
             </button>
-            <button onClick={() => dispatch({type: 'increment'})}>+</button>
-            <button onClick={() => dispatch({type: 'decrement'})}>-</button>
+            <button onClick={() => bookAction({type: 'increment'})}>+</button>
+            <button onClick={() => bookAction({type: 'decrement'})}>-</button>
           </>
     </div>);
         return(
@@ -64,6 +72,20 @@ function BookBuilder() {
         );
 }
 
+// const mapStateToProps = state => {
+//     console.log(state);
+// // return {
+// //  count: countState
+// // }
+// };
 
-export default connect(null,null)(BookBuilder);
+const mapDispatchToProps = dispatch => {
+    return {
+        add: () => {
+            dispatch(incrementAction())
+        }
+    }
+}
+
+export default connect(null,mapDispatchToProps)(BookBuilder);
 
